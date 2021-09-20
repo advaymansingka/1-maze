@@ -95,6 +95,7 @@ int dfs(int row, int col, int goal_row, int goal_col, int num_rows,
         struct maze_room *neighbor = get_neighbor(num_rows, num_cols, maze, &room, dir);
 
         if (room.wallCode[dir] == 0 && neighbor->visited == 0) {
+            room.next = neighbor;
             if (dfs(neighbor->row, neighbor->col, goal_row, goal_col, num_rows, num_cols, maze, file)) {
                 return 1;
             }
@@ -141,6 +142,11 @@ void decode_maze(int num_rows, int num_cols,
  */
 int print_pruned_path(struct maze_room *room, FILE *file) {
     // TODO: implement this function
+
+    while (room->next) {
+        printf("%d %d", room->row, room->col);
+    }
+
 }
 
 /*
@@ -225,4 +231,16 @@ int main(int argc, char **argv) {
         goal_col = atoi(argv[8]);
     }
     // TODO: implement this function
+
+    struct maze_room maze[num_rows][num_cols];
+    initialize_maze(num_rows, num_cols, maze);
+
+    int encoded[num_rows][num_cols];
+
+    read_encoded_maze_from_file(num_rows, num_cols, encoded, maze_file_name);
+    decode_maze(num_rows, num_cols, maze, encoded);
+
+    dfs(start_row, start_col, goal_row, goal_col, num_rows, num_cols, maze, path_file_name);
+
+
 }
