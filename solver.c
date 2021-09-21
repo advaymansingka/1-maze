@@ -277,6 +277,12 @@ int main(int argc, char **argv) {
         return 1;
     }
 
+    FILE *maze_file = fopen(maze_file_name, "r");
+    if (maze_file == NULL) {
+        fprintf(stderr, "Error opening file.\n");
+        return 1;
+    }
+
     struct maze_room maze[num_rows][num_cols];
     initialize_maze(num_rows, num_cols, maze);
     int encoded[num_rows][num_cols];
