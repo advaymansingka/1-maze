@@ -87,7 +87,11 @@ int dfs(int row, int col, int goal_row, int goal_col, int num_rows,
     if (row == goal_row && col == goal_col) {
 
         #ifdef FULL
-            fprintf(file, "%d%s %d\n", row, ",", col);
+            int err = fprintf(file, "%d%s %d\n", row, ",", col);
+            if (err < 0) {
+                fprintf(stderr, "Writing to file failed: %i\n", err);
+                return 1;
+            }
         #endif
 
         return 1;
@@ -96,7 +100,11 @@ int dfs(int row, int col, int goal_row, int goal_col, int num_rows,
     room->visited = 1;
 
         #ifdef FULL
-            fprintf(file, "%d%s %d\n", room->row, ",", room->col);
+            int err = fprintf(file, "%d%s %d\n", room->row, ",", room->col);
+            if (err < 0) {
+                    fprintf(stderr, "Writing to file failed: %i\n", err);
+                return 1;
+            }
         #endif
 
     for (int i = 0; i < 4; i++) {
@@ -109,7 +117,11 @@ int dfs(int row, int col, int goal_row, int goal_col, int num_rows,
                 return 1;
             } else {
             #ifdef FULL
-                fprintf(file, "%d%s %d\n", room->row, ",", room->col);
+                int err = fprintf(file, "%d%s %d\n", room->row, ",", room->col);
+                if (err < 0) {
+                    fprintf(stderr, "Writing to file failed: %i\n", err);
+                return 1;
+                }
             #endif
             }
         }
@@ -280,9 +292,17 @@ int main(int argc, char **argv) {
     }
 
     #ifdef FULL
-        fprintf(path_file, "%s\n", "FULL");
+        int err = fprintf(path_file, "%s\n", "FULL");
+        if (err < 0) {
+            fprintf(stderr, "Writing to file failed: %i\n", err);
+            return 1;
+        }
     #else
-        fprintf(path_file, "%s\n", "PRUNED");
+        int err = fprintf(path_file, "%s\n", "PRUNED");
+        if (err < 0) {
+            fprintf(stderr, "Writing to file failed: %i\n", err);
+            return 1;
+        }
     #endif
 
     dfs(start_row, start_col, goal_row, goal_col, num_rows, num_cols, maze, path_file);
@@ -292,7 +312,6 @@ int main(int argc, char **argv) {
     #else
         print_pruned_path(&maze[start_row][start_col], path_file);
     #endif
-
 
     int close = fclose(path_file);
     if (close == EOF) {
