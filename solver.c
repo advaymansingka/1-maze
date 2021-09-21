@@ -91,6 +91,7 @@ int dfs(int row, int col, int goal_row, int goal_col, int num_rows,
                 fprintf(stderr, "Writing to file failed: %i\n", err);
             }
         #endif
+
         return 1;
     }
     struct maze_room *room = &maze[row][col];
