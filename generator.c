@@ -229,14 +229,22 @@ int main(int argc, char **argv) {
         num_cols = atoi(argv[3]);
     }
     // TODO: implement this function
-    struct maze_room maze[num_rows][num_cols];
-    initialize_maze(num_rows, num_cols, maze);
-    drunken_walk(0, 0, num_rows, num_cols, maze);
 
-    int encoded[num_rows][num_cols];
-    encode_maze(num_rows, num_cols, maze, encoded);
+    if (num_rows < 1 || num_cols < 1) {
+        printf("Incorrect maze dimensions.\n");
+        return 1
 
-    write_encoded_maze_to_file(num_rows, num_cols, encoded, file_name);
+    } else {struct maze_room maze[num_rows][num_cols];
+
+        initialize_maze(num_rows, num_cols, maze);
+        drunken_walk(0, 0, num_rows, num_cols, maze);
+
+        int encoded[num_rows][num_cols];
+        encode_maze(num_rows, num_cols, maze, encoded);
+        write_encoded_maze_to_file(num_rows, num_cols, encoded, file_name);
+
+        return 1;
+    }
 
 }
 
