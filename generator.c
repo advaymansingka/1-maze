@@ -47,8 +47,9 @@ void swap(Direction *i, Direction *j) {
 void shuffle_array(Direction directions[]) {
     // TODO: implement this function
     for (int i = 0; i < 4; i++) {
-        srand(time(NULL));
-        int r = rand() % 4;
+//        srand(time(NULL));
+
+        int r = rand() % (4);
         swap(&directions[i], &directions[r]);
     }
 }
