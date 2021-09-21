@@ -46,6 +46,7 @@ void shuffle_array(Direction directions[]) {
     }
 }
 
+
 /*
  * Recursive function for stepping through a maze and setting its
  *connections/walls using the drunken_walk algorithm
