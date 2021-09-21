@@ -28,14 +28,6 @@ Direction get_opposite_dir(Direction dir) {
 }
 
 /*
- * Given two memory addresses, it swaps their values
- */
-void swap(Direction *i, Direction *j) {
-    Direction tmp;
-    tmp = *j; *j = *i; *i = tmp;
-}
-
-/*
  * Given an array of the four directions, randomizes the order of the directions
  *
  * Parameters:
@@ -47,13 +39,10 @@ void swap(Direction *i, Direction *j) {
 void shuffle_array(Direction directions[]) {
     // TODO: implement this function
     for (int i = 0; i < 4; i++) {
-//        srand(time(NULL));
-
-        int r = rand() % (4);
+        int r = rand() % (4 - i) + i;
         Direction temp = directions[i];
         directions[i] = directions[r];
         directions[r] = temp;
-//        swap(&directions[i], &directions[r]);
     }
 }
 
