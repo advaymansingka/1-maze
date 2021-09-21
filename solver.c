@@ -84,18 +84,18 @@ int dfs(int row, int col, int goal_row, int goal_col, int num_rows,
         int num_cols, struct maze_room maze[num_rows][num_cols], FILE *file) {
     Direction directions[4] = { NORTH, SOUTH, EAST, WEST };
     // TODO: implement this function
-    if (row == goal_row && col == goal_col){
+    if (row == goal_row && col == goal_col) {
         return 1;
     }
-    maze[row][col].visited = 1;
+    struct maze_room *room = &maze[row][col];
+    room->visited = 1;
 
     for (int i = 0; i < 4; i++) {
         Direction dir = directions[i];
-        struct maze_room room = maze[row][col];
-        struct maze_room *neighbor = get_neighbor(num_rows, num_cols, maze, &room, dir);
+        struct maze_room *neighbor = get_neighbor(num_rows, num_cols, maze, room, dir);
 
-        if (room.wallCode[dir] == 0 && neighbor->visited == 0) {
-            room.next = neighbor;
+        if (room->wallCode[dir] == 0 && neighbor->visited == 0) {
+            room->next = neighbor;
             if (dfs(neighbor->row, neighbor->col, goal_row, goal_col, num_rows, num_cols, maze, file)) {
                 return 1;
             }
@@ -142,11 +142,11 @@ void decode_maze(int num_rows, int num_cols,
  */
 int print_pruned_path(struct maze_room *room, FILE *file) {
     // TODO: implement this function
-
-    while (room->next) {
-        printf("%d %d", room->row, room->col);
+    fprintf(file, "%d%s %d\n", room->row, ",", room->col);
+    if (room->next) {
+        print_pruned_path(room->next, file);
     }
-
+    return 0;
 }
 
 /*
@@ -234,13 +234,14 @@ int main(int argc, char **argv) {
 
     struct maze_room maze[num_rows][num_cols];
     initialize_maze(num_rows, num_cols, maze);
-
     int encoded[num_rows][num_cols];
 
     read_encoded_maze_from_file(num_rows, num_cols, encoded, maze_file_name);
     decode_maze(num_rows, num_cols, maze, encoded);
 
-    dfs(start_row, start_col, goal_row, goal_col, num_rows, num_cols, maze, path_file_name);
+    FILE *path_file = fopen(path_file_name, "w+");
+    dfs(start_row, start_col, goal_row, goal_col, num_rows, num_cols, maze, path_file);
 
-
+    fprintf(path_file, "%s\n", "PRUNED");
+    print_pruned_path(&maze[start_row][start_col], path_file);
 }
