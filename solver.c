@@ -286,7 +286,13 @@ int main(int argc, char **argv) {
     #endif
 
     dfs(start_row, start_col, goal_row, goal_col, num_rows, num_cols, maze, path_file);
-    print_pruned_path(&maze[start_row][start_col], path_file);
+
+    #ifdef FULL
+        ;
+    #else
+        print_pruned_path(&maze[start_row][start_col], path_file);
+    #endif
+
 
     int close = fclose(path_file);
     if (close == EOF) {
