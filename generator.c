@@ -232,7 +232,7 @@ int main(int argc, char **argv) {
 
     if (num_rows < 1 || num_cols < 1) {
         printf("Incorrect maze dimensions.\n");
-        return 1
+        return 1;
 
     } else {struct maze_room maze[num_rows][num_cols];
 
