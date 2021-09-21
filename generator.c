@@ -232,7 +232,6 @@ int main(int argc, char **argv) {
 
     if (num_rows < 1 || num_cols < 1) {
         printf("Incorrect maze dimensions.\n");
-        return 1;
 
     } else {struct maze_room maze[num_rows][num_cols];
 
@@ -242,9 +241,8 @@ int main(int argc, char **argv) {
         int encoded[num_rows][num_cols];
         encode_maze(num_rows, num_cols, maze, encoded);
         write_encoded_maze_to_file(num_rows, num_cols, encoded, file_name);
-
-        return 1;
     }
 
+    return 1;
 }
 

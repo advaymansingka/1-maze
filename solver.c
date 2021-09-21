@@ -85,10 +85,25 @@ int dfs(int row, int col, int goal_row, int goal_col, int num_rows,
     Direction directions[4] = { NORTH, SOUTH, EAST, WEST };
     // TODO: implement this function
     if (row == goal_row && col == goal_col) {
+        #ifdef FULL
+            int err = fprintf(file, "%d%s %d\n", row, ",", col);
+            if (err < 0) {
+                fprintf(stderr, "Writing to file failed: %i\n", err);
+                return 1;
+            }
+        #endif
         return 1;
     }
     struct maze_room *room = &maze[row][col];
     room->visited = 1;
+
+    #ifdef FULL
+        int err = fprintf(file, "%d%s %d\n", room->row, ",", room->col);
+        if (err < 0) {
+            fprintf(stderr, "Writing to file failed: %i\n", err);
+            return 1;
+        }
+    #endif
 
     for (int i = 0; i < 4; i++) {
         Direction dir = directions[i];
@@ -142,7 +157,12 @@ void decode_maze(int num_rows, int num_cols,
  */
 int print_pruned_path(struct maze_room *room, FILE *file) {
     // TODO: implement this function
-    fprintf(file, "%d%s %d\n", room->row, ",", room->col);
+    int err = fprintf(file, "%d%s %d\n", room->row, ",", room->col);
+    if (err < 0) {
+        fprintf(stderr, "Writing to file failed: %i\n", err);
+        return 1;
+    }
+
     if (room->next) {
         print_pruned_path(room->next, file);
     }
@@ -255,8 +275,29 @@ int main(int argc, char **argv) {
     decode_maze(num_rows, num_cols, maze, encoded);
 
     FILE *path_file = fopen(path_file_name, "w+");
+
+    if (path_file == NULL) {
+        fprintf(stderr, "Error opening file.\n");
+        return 1;
+    }
+
+    #ifdef FULL
+        fprintf(path_file, "%s\n", "FULL");
+    #else
+        fprintf(path_file, "%s\n", "PRUNED");
+    #endif
+
     dfs(start_row, start_col, goal_row, goal_col, num_rows, num_cols, maze, path_file);
 
-    fprintf(path_file, "%s\n", "PRUNED");
-    print_pruned_path(&maze[start_row][start_col], path_file);
+    #ifdef FULL
+    ;
+    #else
+        print_pruned_path(&maze[start_row][start_col], path_file);
+    #endif
+
+    int close = fclose(path_file);
+    if (close == EOF) {
+        fprintf(stderr, "Could not close file.\n");
+        return 1;
+    }
 }
