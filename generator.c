@@ -31,7 +31,7 @@ Direction get_opposite_dir(Direction dir) {
  * Given two memory addresses, it swaps their values
  */
 void swap(Direction *i, Direction *j) {
-    int tmp;
+    Direction tmp;
     tmp = *j; *j = *i; *i = tmp;
 }
 
@@ -50,7 +50,10 @@ void shuffle_array(Direction directions[]) {
 //        srand(time(NULL));
 
         int r = rand() % (4);
-        swap(&directions[i], &directions[r]);
+        Direction temp = directions[i];
+        directions[i] = directions[r];
+        directions[r] = temp;
+//        swap(&directions[i], &directions[r]);
     }
 }
 
@@ -214,8 +217,6 @@ int write_encoded_maze_to_file(int num_rows, int num_cols,
 
 int main(int argc, char **argv) {
 
-    srand(time(NULL));
-
     char *file_name;
     int num_rows;
     int num_cols;
@@ -232,10 +233,14 @@ int main(int argc, char **argv) {
     }
     // TODO: implement this function
 
+    srand(time(NULL));
+
     if (num_rows < 1 || num_cols < 1) {
         printf("Incorrect maze dimensions.\n");
+        return 1;
 
-    } else {struct maze_room maze[num_rows][num_cols];
+    } else {
+        struct maze_room maze[num_rows][num_cols];
 
         initialize_maze(num_rows, num_cols, maze);
         drunken_walk(0, 0, num_rows, num_cols, maze);
@@ -244,7 +249,6 @@ int main(int argc, char **argv) {
         encode_maze(num_rows, num_cols, maze, encoded);
         write_encoded_maze_to_file(num_rows, num_cols, encoded, file_name);
     }
-
-    return 1;
+    return 0;
 }
 
