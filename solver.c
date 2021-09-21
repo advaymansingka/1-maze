@@ -86,18 +86,18 @@ int dfs(int row, int col, int goal_row, int goal_col, int num_rows,
     // TODO: implement this function
     if (row == goal_row && col == goal_col) {
 
-//        #ifdef FULL
-//            fprintf(file, "%d%s %d\n", row, ",", col);
-//        #endif
+        #ifdef FULL
+            fprintf(file, "%d%s %d\n", row, ",", col);
+        #endif
 
         return 1;
     }
     struct maze_room *room = &maze[row][col];
     room->visited = 1;
 
-//    #ifdef FULL
-//        fprintf(file, "%d%s %d\n", room->row, ",", room->col);
-//    #endif
+        #ifdef FULL
+            fprintf(file, "%d%s %d\n", room->row, ",", room->col);
+        #endif
 
     for (int i = 0; i < 4; i++) {
         Direction dir = directions[i];
@@ -107,6 +107,10 @@ int dfs(int row, int col, int goal_row, int goal_col, int num_rows,
             room->next = neighbor;
             if (dfs(neighbor->row, neighbor->col, goal_row, goal_col, num_rows, num_cols, maze, file)) {
                 return 1;
+            } else {
+            #ifdef FULL
+                fprintf(file, "%d%s %d\n", room->row, ",", room->col);
+            #endif
             }
         }
     }
