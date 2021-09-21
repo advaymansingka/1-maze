@@ -89,7 +89,6 @@ int dfs(int row, int col, int goal_row, int goal_col, int num_rows,
             int err = fprintf(file, "%d%s %d\n", row, ",", col);
             if (err < 0) {
                 fprintf(stderr, "Writing to file failed: %i\n", err);
-                return 1;
             }
         #endif
         return 1;
@@ -101,7 +100,6 @@ int dfs(int row, int col, int goal_row, int goal_col, int num_rows,
         int err = fprintf(file, "%d%s %d\n", room->row, ",", room->col);
         if (err < 0) {
             fprintf(stderr, "Writing to file failed: %i\n", err);
-            return 1;
         }
     #endif
 
