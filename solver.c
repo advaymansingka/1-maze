@@ -86,10 +86,10 @@ int dfs(int row, int col, int goal_row, int goal_col, int num_rows,
     // TODO: implement this function
     if (row == goal_row && col == goal_col) {
         #ifdef FULL
-            int err = fprintf(file, "%d%s %d\n", row, ",", col);
-            if (err < 0) {
-                fprintf(stderr, "Writing to file failed: %i\n", err);
-            }
+            fprintf(file, "%d%s %d\n", row, ",", col);
+//            if (err < 0) {
+//                fprintf(stderr, "Writing to file failed: %i\n", err);
+//            }
         #endif
 
         return 1;
@@ -98,10 +98,10 @@ int dfs(int row, int col, int goal_row, int goal_col, int num_rows,
     room->visited = 1;
 
     #ifdef FULL
-        int err = fprintf(file, "%d%s %d\n", room->row, ",", room->col);
-        if (err < 0) {
-            fprintf(stderr, "Writing to file failed: %i\n", err);
-        }
+        fprintf(file, "%d%s %d\n", room->row, ",", room->col);
+//        if (err < 0) {
+//            fprintf(stderr, "Writing to file failed: %i\n", err);
+//        }
     #endif
 
     for (int i = 0; i < 4; i++) {
