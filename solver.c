@@ -232,6 +232,21 @@ int main(int argc, char **argv) {
     }
     // TODO: implement this function
 
+    if (num_rows < 1 || num_cols < 1) {
+        printf("Incorrect maze dimensions.\n");
+        return 1;
+    }
+
+    if (start_row >= num_rows || start_col >= num_cols || start_row < 0 || start_col < 0) {
+        printf("Incorrect start location\n");
+        return 1;
+    }
+
+    if (goal_row >= num_rows || goal_col >= num_cols || goal_row < 0 || goal_col < 0) {
+        printf("Incorrect goal location\n");
+        return 1;
+    }
+
     struct maze_room maze[num_rows][num_cols];
     initialize_maze(num_rows, num_cols, maze);
     int encoded[num_rows][num_cols];
